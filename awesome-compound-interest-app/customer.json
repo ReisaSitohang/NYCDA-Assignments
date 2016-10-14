@@ -1,0 +1,17 @@
+{
+    "name": "Reisa",
+    "age": 25,
+    "finances":    {
+        "startcapital": 1000,
+        "monthyadd": 1000
+    },
+    "pension": {
+    	"age": 65,
+    	"interest": {
+    		"pessimistic": 1.02,
+    		"average":1.04,
+    		"optimistic": 1.08
+    	}
+    }
+
+}
