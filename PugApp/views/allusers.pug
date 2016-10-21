@@ -1,0 +1,9 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		h2  All Users
+		section.allnames
+			div.allnames
+				each thing in data
+					.thing #{thing.name}

@@ -1,0 +1,15 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		h2  How can I help you?
+		section.index
+			div.buttons
+				a#Button(href='/allusers') 
+					span Show All Users
+				br
+				a#Button(href='/adduser') 
+					span Add New User
+				br
+				a#Button(href='/searchbar') 
+					span Search User

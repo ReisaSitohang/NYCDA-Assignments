@@ -1,0 +1,14 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		h2  Sorry, I don't know #{name}!
+		section.found 
+			div.who
+				p Do you want to add #{name} to the list?
+				a#Button(href='/adduser') 
+					span Add New User
+				p Or do you want to look for someone else?
+				a#Button(href='/searchbar') 
+					span Search User
+
