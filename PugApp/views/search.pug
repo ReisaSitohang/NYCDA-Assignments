@@ -1,0 +1,13 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		h2  Who are you looking for?
+		section.other
+			form(action='/result', method='post')
+				div.bartext
+					| Name or Lastname: 
+				div
+					input.bar(type='text', name='searchedname')
+					input.button(type='submit', value='Submit')
+				div.clear

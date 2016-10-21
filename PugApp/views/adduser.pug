@@ -1,0 +1,21 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		div.clear
+		h2  Add User
+		section.other
+			form(action='/adduser', method='post')
+				| Name :
+				br
+				input.user(type='text', name='addname' maxlength="50" autofocus)
+				br
+				| Lastname :
+				br
+				input.user(type='text', name='addlastname' maxlength="50")
+				br
+				| Email :
+				br
+				input.user(type='text', name='addemail' maxlength="50")
+				br
+				input.usersub(type='submit', value='Submit')

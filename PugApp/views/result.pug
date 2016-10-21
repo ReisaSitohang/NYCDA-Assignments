@@ -1,0 +1,16 @@
+html
+	include includes/head.pug
+	body
+		include includes/header.pug
+		h2  Found this cool person
+		section.found 
+			div.left
+				li Name: 
+				li Lastname: 
+				li Email: 
+			div.right
+				li #{data.name} 
+				li #{data.lastname} 
+				li #{data.email}
+			div.clear
+
