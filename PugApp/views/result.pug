@@ -2,15 +2,13 @@ html
 	include includes/head.pug
 	body
 		include includes/header.pug
-		h2  Found this cool person
+		h2  Hello, I found
 		section.found 
-			div.left
-				li Name: 
-				li Lastname: 
-				li Email: 
-			div.right
-				li #{data.name} 
-				li #{data.lastname} 
-				li #{data.email}
+			div.foundNames
+				each found in data
+					li.found Name: #{found.name} 
+					li.found Lastname: #{found.lastname} 
+					li.found Email: #{found.email}
+					p
 			div.clear
 

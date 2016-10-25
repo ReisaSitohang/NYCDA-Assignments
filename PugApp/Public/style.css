@@ -12,6 +12,11 @@
     font-family: "HV";
     src: url('./Fonts/HV.ttf') format('truetype');
 }
+
+div.foundnames {
+    text-align: center;
+}
+
 .header{
 	padding-top: 20px;
 	background-color:#C7D8D6;
@@ -236,14 +241,15 @@ a#Button:active span {
     transform: translate(0, 4px);
 }
 
-input.bar {
+input#search {
 	border-radius: 15px 0px 0px 15px;
+    min-width: 300px;
 	font-size:40px;
 	font-family: "HV", helvetica, sans-serif;
 }
 
 
-input.button {
+input#searchbutton {
 	border-radius: 0px 15px 15px 0px;
 	font-size:40px;
 	font-family: "HV", helvetica, sans-serif;
@@ -267,18 +273,18 @@ input.button {
     transition: background-color .2s ease-in-out, transform .1s ease-in-out;
 }
 
-input.button:hover {
+input#searchbutton {
     background-color: #ec6a9c;
     text-shadow: 0 -1px 1px rgba(175, 49, 95, .9), 0 0 5px rgba(255, 255, 255, .8);
 }
 
-input.button:active, input.button:focus {
+input#searchbutton:active, input#searchbutton:focus {
     -webkit-box-shadow:    0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
     box-shadow:    0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
 }
 
-input.button:active spa {
+input#searchbutton:active spa {
     -webkit-transform: translate(0, 4px);
     -moz-transform: translate(0, 4px);
     -o-transform: translate(0, 4px);

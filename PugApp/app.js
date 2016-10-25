@@ -21,62 +21,73 @@ app.get('/', (req, res)=>{
 	})
 
 //route1
-app.get('/allusers', (req, res)=>{
-	console.log('Opened all users')
-	fs.readFile(__dirname+'/users.json', (error, data) => {
-		if ( error ) throw ( error )
-			let parsedData = JSON.parse( data )
-		console.log( parsedData )
-		res.render('allusers', {data: parsedData})
-	})
-})
+// app.get('/allusers', (req, res)=>{
+// 	console.log('Opened all users')
+// 	fs.readFile(__dirname+'/users.json', (error, data) => {
+// 		if ( error ) throw ( error )
+// 			let parsedData = JSON.parse( data )
+// 		console.log( parsedData )
+// 		res.render('allusers', {data: parsedData})
+// 	})
+// })
 
 // route2
 app.get('/searchbar', (req, res)=>{
 	console.log('Opened searchBar')
+	let Name = req.query.searchedname
+ 	console.log(Name);
 	res.render('search')
 })
 
 // route3
 
-app.post('/result', function(req, res){  
-	let name = req.body.searchedname
+app.post('/searchbar', (req, res)=>{  
+	let Name = req.body.searchedname
+	console.log(req.body.searchedname)
 	fs.readFile(__dirname+'/users.json', (error, data) => {
 		if ( error ) throw ( error )
 			let parsedData = JSON.parse( data )
 		var checkbox = 0
+		var results = [];
 		for (let i = 0; i < parsedData.length; i++ ){
-			if ( (parsedData[i].name.toUpperCase()=== name.toUpperCase() ) || (parsedData[i].lastname.toUpperCase() === name.toUpperCase()) ){
+			if ( (parsedData[i].name.indexOf(Name)=== 0 ) || (parsedData[i].lastname.indexOf(Name)=== 0 ) ){
 				checkbox = 1
 				console.log("Found user: "+parsedData[i].name+" "+parsedData[i].lastname)  
-				res.render('result',{data: parsedData[i]})
+				results.push(parsedData[i])
 			} 
+
+		}
+		if (results.length > 0){
+			console.log(results)
+			res.send(results)
 		}
 		if (checkbox == 0) {
-			console.log("Who is "+name+"? I don\'t know this person.")
-			res.render('error',{name: name})
+			console.log("Who is "+Name+"? I don\'t know this person.")
+			res.send('error',{Name: Name})
 		}
-		})
-})
-
-// route4
-app.get('/adduser', (req, res)=>{
-	console.log("Opened add user")
-	res.render('adduser')
-})
-
-
-app.post('/adduser', (req, res)=>{
-	console.log("Adding user :"+req.body.addname) 
-	fs.readFile(__dirname+'/users.json', (error, data) => {
-		if ( error ) throw ( error )
-		let users = JSON.parse( data )
-		users.push({"name":req.body.addname,"lastname":req.body.addlastname,"email":req.body.addemail});
-		data = JSON.stringify(users)
-        fs.writeFile(__dirname+'/users.json', data)
 	})
-	res.redirect ('/allusers')
 })
+
+
+
+// // route4
+// app.get('/adduser', (req, res)=>{
+// 	console.log("Opened add user")
+// 	res.render('adduser')
+// })
+
+
+// app.post('/adduser', (req, res)=>{
+// 	console.log("Adding user :"+req.body.addname) 
+// 	fs.readFile(__dirname+'/users.json', (error, data) => {
+// 		if ( error ) throw ( error )
+// 		let users = JSON.parse( data )
+// 		users.push({"name":req.body.addname,"lastname":req.body.addlastname,"email":req.body.addemail});
+// 		data = JSON.stringify(users)
+//         fs.writeFile(__dirname+'/users.json', data)
+// 	})
+// 	res.redirect ('/allusers')
+// })
 
 app.listen (8000, () => {
 	console.log('server is running')

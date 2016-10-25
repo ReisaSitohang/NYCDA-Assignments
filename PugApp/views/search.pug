@@ -4,10 +4,26 @@ html
 		include includes/header.pug
 		h2  Who are you looking for?
 		section.other
-			form(action='/result', method='post')
-				div.bartext
-					| Name or Lastname: 
+			form(autocomplete="off")
 				div
-					input.bar(type='text', name='searchedname')
-					input.button(type='submit', value='Submit')
+					input#search(type='search', name='searchedname', source='/users.json',placeholder="Name or Lastname")
+					input#searchbutton(type='submit', value='Submit')
 				div.clear
+			ul#show-data
+				script.
+					$('#searchbutton').on('click', function(e) { 
+						e.preventDefault()
+						console.log("clicked button")
+						let typed = ($('#search').val())
+						var showData = $('#show-data')
+						//- showData.text('Loading.......')
+
+						$.post("/searchbar", { searchedname: typed }, (res)=>{
+								$.each(res, (i, name)=>{
+								showData.append('<li> Name: '+res[i].name+'</li>'+'<li> Lastname: '+res[i].lastname+'</li>'+'<li> Email: '+res[i].email+'</li>'+'<p></p>')
+								}
+								) 	
+						})
+					})
+
+
