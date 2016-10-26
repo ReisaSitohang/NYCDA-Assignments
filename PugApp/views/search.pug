@@ -6,24 +6,13 @@ html
 		section.other
 			form(autocomplete="off")
 				div
-					input#search(type='search', name='searchedname', source='/users.json',placeholder="Name or Lastname")
+					input#search(type='text', list='userlist', name='searchedname',placeholder="Name or Lastname")
+					datalist#userlist
 					input#searchbutton(type='submit', value='Submit')
+				div
+					ul#show-data
+						include includes/searchbarscript.pug
 				div.clear
-			ul#show-data
-				script.
-					$('#searchbutton').on('click', function(e) { 
-						e.preventDefault()
-						console.log("clicked button")
-						let typed = ($('#search').val())
-						var showData = $('#show-data')
-						//- showData.text('Loading.......')
-
-						$.post("/searchbar", { searchedname: typed }, (res)=>{
-								$.each(res, (i, name)=>{
-								showData.append('<li> Name: '+res[i].name+'</li>'+'<li> Lastname: '+res[i].lastname+'</li>'+'<li> Email: '+res[i].email+'</li>'+'<p></p>')
-								}
-								) 	
-						})
-					})
+					script.
 
 

@@ -1,0 +1,29 @@
+script.
+		$( document ).ready(()=> {
+			$('#search').keyup( function(){
+				let typed = ($('#search').val())
+				console.log(typed)
+				var UserList = $('#userlist')
+				$.post("/Autocomplete", {typing:typed}, (res)=>{
+					UserList.empty()
+					$.each(res, (i)=>{
+						UserList.append("<option>"+res[i]+"</option")
+					})
+				})
+			})
+		})
+
+		$('#searchbutton').on('click', function(e) { 
+			e.preventDefault()
+			console.log("clicked button")
+			let typed = ($('#search').val())
+			var showData = $('#show-data')
+
+			$.post("/results", { searchedname: typed }, (res)=>{
+					showData.empty()
+					$.each(res, (i, name)=>{
+					showData.append('<li> Name: '+res[i].name+'</li>'+'<li> Lastname: '+res[i].lastname+'</li>'+'<li> Email: '+res[i].email+'</li>'+'<p></p>')
+					}
+					) 	
+			})
+		})
