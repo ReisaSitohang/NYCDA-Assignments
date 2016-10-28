@@ -4,8 +4,6 @@ const express = require ( 'express' )
 const fs      = require ( 'fs' )
 const app     = express( )
 const bodyParser = require('body-parser')
-// const Autocomplete = require('./Autocomplete')
-
 
 app.set ( 'view engine', 'pug' )
 app.set ( 'views', __dirname+'/views')
@@ -28,13 +26,13 @@ app.get('/allusers', (req, res)=>{
 	fs.readFile(__dirname+'/users.json', (error, data) => {
 		if ( error ) throw ( error )
 			let parsedData = JSON.parse( data )
-		console.log( parsedData )
 		res.render('allusers', {data: parsedData})
 	})
 })
 
 // route2
 app.get('/searchbar', (req, res)=>{
+	var timeInMs = Date.now()
 	console.log('Opened searchBar')
 	res.render('search')
 })
@@ -43,7 +41,6 @@ app.get('/searchbar', (req, res)=>{
 
 app.post('/results', (req, res)=>{  
 	let Name = req.body.searchedname
-	console.log(req.body.searchedname)
 	fs.readFile(__dirname+'/users.json', (error, data) => {
 		if ( error ) throw ( error )
 			let parsedData = JSON.parse( data )
@@ -58,12 +55,11 @@ app.post('/results', (req, res)=>{
 
 		}
 		if (results.length > 0){
-			console.log(results)
 			res.send(results)
 		}
 		if (checkbox == 0) {
 			console.log("Who is "+Name+"? I don\'t know this person.")
-			res.send('error',{Name: Name})
+			res.send({Name: Name})
 		}
 	})
 })
@@ -72,11 +68,9 @@ app.post('/results', (req, res)=>{
 
 app.post('/Autocomplete', (req, res)=>{  
 	let Typing = req.body.typing
-	console.log(Typing)
 	fs.readFile(__dirname+'/users.json', (error, data) => {
 		if ( error ) throw ( error )
 		let parsedData = JSON.parse( data )	
-		console.log(parsedData)
 		let jsonList = []
 		for (let i = 0; i < parsedData.length; i++ ){
 			jsonList.push(parsedData[i].name+" "+parsedData[i].lastname)
@@ -84,10 +78,6 @@ app.post('/Autocomplete', (req, res)=>{
 		res.send(jsonList)	
 	})
 })
-
-
-
-
 
 
 

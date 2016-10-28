@@ -1,15 +1,21 @@
 script.
 		$( document ).ready(()=> {
+			let oldtime = 301
 			$('#search').keyup( function(){
 				let typed = ($('#search').val())
-				console.log(typed)
-				var UserList = $('#userlist')
-				$.post("/Autocomplete", {typing:typed}, (res)=>{
-					UserList.empty()
-					$.each(res, (i)=>{
-						UserList.append("<option>"+res[i]+"</option")
+				let UserList = $('#userlist')
+				let newtime = Date.now()
+				let counter = (newtime-oldtime)
+
+				if (counter > 300) {
+					$.post("/Autocomplete", {typing:typed}, (res)=>{
+						UserList.empty()
+						$.each(res, (i)=>{
+							UserList.append("<option>"+res[i]+"</option")
+						})
 					})
-				})
+					oldtime=Date.now()
+				}
 			})
 		})
 
@@ -21,9 +27,9 @@ script.
 
 			$.post("/results", { searchedname: typed }, (res)=>{
 					showData.empty()
-					$.each(res, (i, name)=>{
-					showData.append('<li> Name: '+res[i].name+'</li>'+'<li> Lastname: '+res[i].lastname+'</li>'+'<li> Email: '+res[i].email+'</li>'+'<p></p>')
-					}
-					) 	
+						$.each(res, (i, name)=>{
+						showData.append('<li> Name: '+res[i].name+'</li>'+'<li> Lastname: '+res[i].lastname+'</li>'+'<li> Email: '+res[i].email+'</li>'+'<p></p>')
+						}
+						)
 			})
 		})
