@@ -1,13 +1,13 @@
 script.
 		$( document ).ready(()=> {
-			let oldtime = 0
+				let oldtime = 0
 			$('#search').keyup( function(){
 				let typed = ($('#search').val())
 				let UserList = $('#userlist')
 				let newtime = Date.now()
 				let change = (newtime-oldtime)
 
-				if (change > 300) {
+				if (change > 8000) {
 					$.post("/Autocomplete", {typing:typed}, (res)=>{
 						UserList.empty()
 						$.each(res, (i)=>{
