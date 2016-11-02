@@ -21,17 +21,31 @@ app.get('/', (req, res)=>{
 		res.render('index')
 	})
 
-app.post('/', (req, res)=>{
+app.post('/messages', (req, res)=>{
 	console.log("Title :"+req.body.title)
 	console.log("Message :"+req.body.message)
+	
 	pg.connect(connectionString, (err, client, done)=>{
-		console.log("connected to db YOO!")
-		// client.query( ('insert into messages (title, body) values ('+req.body.title+','+req.body.body+')' ),
-		// (err, result)=>{
-		// 	console.log(result)
-		// 	done()
-		// 	pg.end()
-		// })
+		console.log("Connected To DB")
+		client.query( ("insert into messages (title, body) values ('"+req.body.title+"','"+req.body.message+"')" ),
+		(err, result)=>{
+			done()
+			pg.end()
+		})
+	})
+	res.redirect('/messages')
+})
+
+app.get('/messages', (req, res)=>{
+	console.log('opened messages page')
+	pg.connect(connectionString, (err, client, done)=>{
+		console.log("connected to DB again")
+		client.query("select title, body from messages", (err, result)=>{
+			console.log(result.rows)
+			res.render('messages', { result : result.rows })
+			done()
+			pg.end()
+		})
 	})
 })
 

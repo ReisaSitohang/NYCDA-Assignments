@@ -1,0 +1,12 @@
+html
+	head
+		title Bulletin Board App
+	body
+		h1 Message Board
+		h2 Look at all these messages!
+		section
+				each thing in result
+					h3|Title
+					.thing #{thing.title}
+					h3|Message
+					.thing #{thing.body}
