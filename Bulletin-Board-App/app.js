@@ -44,7 +44,6 @@ app.get('/messages', (req, res)=>{
 			console.log(result.rows)
 			res.render('messages', { result : result.rows })
 			done()
-			pg.end()
 		})
 	})
 })

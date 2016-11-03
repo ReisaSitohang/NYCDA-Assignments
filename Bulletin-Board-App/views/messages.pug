@@ -1,12 +1,12 @@
 html
-	head
-		title Bulletin Board App
+	-var title="Messages"
+	include includes/head.pug
 	body
 		h1 Message Board
 		h2 Look at all these messages!
 		section
+			div.All
 				each thing in result
-					h3|Title
-					.thing #{thing.title}
-					h3|Message
-					.thing #{thing.body}
+					div.SeperateMessages
+						h4 #{thing.title}
+						p #{thing.body}
