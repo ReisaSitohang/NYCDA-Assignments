@@ -1,0 +1,18 @@
+html
+	-var title='Bulletin Board'
+	include includes/head.pug
+	body
+		h1 Message Board
+		h2  Hello, what is on your mind?
+		section
+			form.bulletin(action='/messages', method='post')
+				div
+					input.bar(type='text', autofocus, name='title', placeholder="Title")
+					br
+					textarea(rows="20" cols="50" type='text', name="message") Let it all out...
+					br
+					input.button(type='submit', value='Post Message')
+				div.clear
+
+
+
