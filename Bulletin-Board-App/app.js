@@ -36,7 +36,7 @@ app.post('/messages', (req, res)=>{
 	console.log("Title :"+req.body.title)
 	console.log("The Message :"+req.body.bericht)
 	//create messages
-  	db.sync({force: true}).then( ()=> {
+  	db.sync({force: false}).then( ()=> {
 	 	console.log('sync succesfully')
 	 	Message.create({
 		 	title: req.body.title,

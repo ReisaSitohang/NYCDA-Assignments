@@ -1,9 +1,72 @@
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
 .SeperateMessages{
-	background-color: lightgrey;
+	background-color: blanchedalmond;
 	border-style: solid;
 	border-width: 10px;
-	border-color: lightgrey;
+	border-color: lightblue;
+	border-radius: 30px;
     margin: 10px 100px 10px 100px;
     padding-left: 50px;
     padding-right: 50px;
 }
+
+p.thetext {
+	font-family: 'Indie Flower';
+	font-size:25px;
+}
+
+h5{
+	font-family: 'Proza Libre';
+	font-style: bold;
+	font-size: 25px;
+}
+
+a.bannertext {
+	font-family: 'Proza Libre';
+}
+
+textarea.messagearea, input.titlebar {
+	width: 80%;
+	margin-left: 10%;
+}
+textarea.messagearea{
+	height: 50%;
+}
+
+input.btn{
+	margin-left:41%;
+	margin-top: 12px;
+}
+
+/*font-family: 'Indie Flower', cursive;
+font-family: 'Proza Libre', sans-serif;*/
+
+h1 {
+	font-family: 'Proza Libre';
+	font-size: 2.5rem;
+	text-align: center;
+}
+
+nav .brand-logo {
+	margin-left: 20px;
+	font-family: 'Coiny', cursive;
+	font-size: 3.0rem;
+}
+
+.timestamp {
+	font-size: 10px;
+}
+
+#cat {
+	max-height: 150px;
+}
+
