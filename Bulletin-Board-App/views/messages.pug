@@ -3,13 +3,13 @@ html
 	include includes/head.pug
 	body
 		include includes/header.pug
-		h1 Look at all these messages!
-		section
-			div.All
-				each thing in result
-					div.SeperateMessages
-						h5 #{thing.title}
-						p.thetext #{thing.body}
-						p.timestamp #{thing.createdAt}
-
+		main
+			h1 Look at all these messages!
+			section
+				div.row
+					each thing in result
+						div.SeperateMessages.col.s12.col.m10.col.offset-m1
+							h5 #{thing.title}
+							p.thetext #{thing.body}
+							p.timestamp #{thing.createdAt}
 		include includes/footer.pug

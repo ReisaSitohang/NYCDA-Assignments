@@ -14,7 +14,6 @@ app.set ( 'views', __dirname+'/views')
 
 // let connectionString =('postgres://' + process.env.POSTGRES_USER + ':' + process.env.POSTGRES_PASSWORD + '@localhost/bulletinboard')
 
-
 app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({     
   extended: true
@@ -27,16 +26,16 @@ app.get('/', (req, res)=>{
 
 //make table
 	//create table
-	let Message = db.define('MessagesWithSequalize',{
+	let Message = db.define('seq-message',{
  	title: Sequelize.STRING,
- 	body: Sequelize.STRING,
+ 	body: Sequelize.TEXT,
 	});
 
 app.post('/messages', (req, res)=>{
 	console.log("Title :"+req.body.title)
 	console.log("The Message :"+req.body.bericht)
 	//create messages
-  	db.sync({force: false}).then( ()=> {
+  	db.sync({force: true}).then( ()=> {
 	 	console.log('sync succesfully')
 	 	Message.create({
 		 	title: req.body.title,
@@ -51,7 +50,6 @@ app.post('/messages', (req, res)=>{
 
 app.get('/messages', (req, res)=>{
 	console.log('opened messages page')
-
 	Message.findAll().then( messages =>{
  	console.log( messages )
  	res.render('messages', {result: messages})
