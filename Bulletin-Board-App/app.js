@@ -2,14 +2,17 @@
 const express = require ( 'express' )
 const fs      = require ( 'fs' )
 const app     = express( )
-const pg      = require('pg')
 const bodyParser = require('body-parser')
+const Sequelize = require('sequelize');
+const db = new Sequelize('bulletinboard', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD,{
+	host: 'localhost',
+	dialect: 'postgres'
+});
 
 app.set ( 'view engine', 'pug' )
 app.set ( 'views', __dirname+'/views')
 
-let connectionString =('postgres://' + process.env.POSTGRES_USER + ':' + process.env.POSTGRES_PASSWORD + '@localhost/bulletinboard')
-
+// let connectionString =('postgres://' + process.env.POSTGRES_USER + ':' + process.env.POSTGRES_PASSWORD + '@localhost/bulletinboard')
 
 app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({     
@@ -21,31 +24,36 @@ app.get('/', (req, res)=>{
 		res.render('index')
 	})
 
+//make table
+	//create table
+	let Message = db.define('seq-message',{
+ 	title: Sequelize.STRING,
+ 	body: Sequelize.TEXT,
+	});
+
 app.post('/messages', (req, res)=>{
 	console.log("Title :"+req.body.title)
-	console.log("Message :"+req.body.message)
-	
-	pg.connect(connectionString, (err, client, done)=>{
-		console.log("Connected To DB")
-		client.query( ("insert into messages (title, body) values ('"+req.body.title+"','"+req.body.message+"')" ),
-		(err, result)=>{
-			done()
-			pg.end()
+	console.log("The Message :"+req.body.bericht)
+	//create messages
+  	db.sync({force: true}).then( ()=> {
+	 	console.log('sync succesfully')
+	 	Message.create({
+		 	title: req.body.title,
+		 	body: req.body.bericht
 		})
-	})
-	res.redirect('/messages')
+		.then ( message =>{
+		console.log('created new message')
+		res.redirect('/messages')
+		})
+ 	})
 })
 
 app.get('/messages', (req, res)=>{
 	console.log('opened messages page')
-	pg.connect(connectionString, (err, client, done)=>{
-		console.log("connected to DB again")
-		client.query("select title, body from messages", (err, result)=>{
-			console.log(result.rows)
-			res.render('messages', { result : result.rows })
-			done()
-		})
-	})
+	Message.findAll().then( messages =>{
+ 	console.log( messages )
+ 	res.render('messages', {result: messages})
+ 	})
 })
 
 app.listen (8000, () => {

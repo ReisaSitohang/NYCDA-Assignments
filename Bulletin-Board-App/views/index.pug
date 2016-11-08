@@ -2,17 +2,18 @@ html
 	-var title='Bulletin Board'
 	include includes/head.pug
 	body
-		h1 Message Board
-		h2  Hello, what is on your mind?
-		section
+		main
+			include includes/header.pug
+			h1 Hello, what is on your mind?
 			form.bulletin(action='/messages', method='post')
-				div
-					input.bar(type='text', autofocus, name='title', placeholder="Title")
-					br
-					textarea(rows="20" cols="50" type='text', name="message") Let it all out...
-					br
-					input.button(type='submit', value='Post Message')
-				div.clear
+				div.row
+					div.col.s12.col.m8.col.offset-m2
+						input.titlebar(type='text', autofocus, name='title', placeholder="Title" required)
+					div.col.s12.col.m8.col.offset-m2
+						textarea.messagearea(rows="10" cols="50" type='text', name="bericht" placeholder="Let it all out..." required)
+				div.center-align
+					input.waves-effect.waves-light.btn.btn-large(type='submit', value='Post Message')
+		include includes/footer.pug
 
 
 

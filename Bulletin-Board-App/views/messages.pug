@@ -2,11 +2,14 @@ html
 	-var title="Messages"
 	include includes/head.pug
 	body
-		h1 Message Board
-		h2 Look at all these messages!
-		section
-			div.All
-				each thing in result
-					div.SeperateMessages
-						h4 #{thing.title}
-						p #{thing.body}
+		include includes/header.pug
+		main
+			h1 Look at all these messages!
+			section
+				div.row
+					each thing in result
+						div.SeperateMessages.col.s12.col.m10.col.offset-m1
+							h5 #{thing.title}
+							p.thetext #{thing.body}
+							p.timestamp.right-align #{thing.createdAt}
+		include includes/footer.pug
