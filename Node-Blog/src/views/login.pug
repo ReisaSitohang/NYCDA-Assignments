@@ -1,0 +1,27 @@
+html
+	-var title='Login'
+	include includes/head.pug
+	body
+		script.
+			$(document).ready(function () {
+				$('#Submit').click(function(event) {
+					if($('#email').val().trim().length === 0 || $('#pswrd').val().trim().length === 0) {
+						event.preventDefault();
+						$('#error-message').html("Your username or password is empty.");
+					}
+				});
+			});
+		h1 Login or something
+		br
+		|  Email:
+		br
+		input#email(type='email', name='emailAddress')
+		br
+		|  Password:
+		br
+		input#pswrd(type='password', name='pswrd')
+		br
+		br
+		input(type='submit', value='Submit')
+		br
+		h2#error-message= message

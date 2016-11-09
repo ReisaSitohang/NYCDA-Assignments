@@ -1,18 +1,17 @@
 html
 	-var title='Welcome to notTumblr'
 	include includes/head.pug
-	body
 		script.
 			$(document).ready(function () {
 				console.log("doc ready")
 				$('#Submit').click(function(event) {
-					if($('#emailAddress').val().trim().length === 0 || $('#pasword').val().trim().length === 0) {
+					if($('#email').val().trim().length === 0 || $('#pswrd').val().trim().length === 0) {
 						event.preventDefault();
 						$('#err-message').html("Your username or password is empty.");
 					}
 				});
 			});
-
+	body
 		if user
 			a(href='/myposts') My Posts
 			br
@@ -20,20 +19,19 @@ html
 		else 		
 			h1 Welcome to notTumblr
 			br
-			form(action='/login' method='post')
-				|  Email:
-				br
-				input#email(type='email', name='email')
-				br
-				|  Password:
-				br
-				input#password(type='password', name='password')
-				br
-				br
-				input#Submit(type='submit', value='Submit')
-				br
-				a(href='/Register') Register
-				br
+			|  Email:
+			br
+			input#email(type='email', name='emailAddress')
+			br
+			|  Password:
+			br
+			input#pswrd(type='password', name='pswrd')
+			br
+			br
+			input#Submit(type='submit', value='Submit')
+			br
+			a(href='/Register') Register
+			br
 
 		h2#err-message= message
 

@@ -44,7 +44,7 @@ User.hasMany ( Post )
 Post.belongsTo ( User )
 
 //____________Set express routers________________
-//Homepage/Login-page
+
 app.get( '/', ( req, res ) => {
 	res.render( 'index1', {
 		message: req.query.message,
@@ -52,7 +52,17 @@ app.get( '/', ( req, res ) => {
 	} )
 } )
 
-//Login route
+app.get( '/myposts', ( req, res ) => {
+	var user = req.session.user;
+	if (user === undefined) {
+		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+	} else {
+		res.render('myposts1', {
+			user: user
+		});
+	}
+} )
+
 app.post('/login', function (request, response) {
 	if(request.body.email.length === 0) {
 		response.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
@@ -80,8 +90,6 @@ app.post('/login', function (request, response) {
 	});
 });
 
-
-//logout route
 app.get('/logout', function (request, response) {
 	request.session.destroy(function(error) {
 		if(error) {
@@ -90,19 +98,6 @@ app.get('/logout', function (request, response) {
 		response.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
 	})
 });
-
-
-//My posts, viewable after login success
-app.get( '/myposts', ( req, res ) => {
-	var user = req.session.user;
-	if (user === undefined) {
-		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
-	} else {
-		res.render('myposts1', {
-			user: user
-		});
-	}
-} )
 
 //Register route, after registering redirect to login
 app.get( '/register', ( req, res ) => {
@@ -127,7 +122,6 @@ app.post( '/register', ( req, res ) => {
 		})
 	} )
 } )
-
 
 app.listen(3000, function () {
 			console.log('Example app listening')
