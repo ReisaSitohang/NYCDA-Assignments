@@ -3,3 +3,26 @@ html
 	include includes/head.pug
 	body
 		h1 Join the fambam
+		form(action='/register', method='post')
+			|  First name:
+			br
+			input(type='text', name='firstName')
+			br
+			|  Last name:
+			br
+			input(type='text', name='lastName')
+			br
+			|  Birthday:
+			br
+			input(type='date', name='birthDay')
+			br
+			|  Email:
+			br
+			input(type='email', name='emailAddress')
+			br
+			|  Password:
+			br
+			input(type='password',pattern=".{8,}"   required title="8 characters minimum", name='pswrd')
+			br
+			br
+			input(type='submit', value='Submit')
