@@ -44,7 +44,7 @@ User.hasMany ( Post )
 Post.belongsTo ( User )
 
 //____________Set express routers________________
-
+//Homepage/Login-page
 app.get( '/', ( req, res ) => {
 	res.render( 'index1', {
 		message: req.query.message,
@@ -52,17 +52,7 @@ app.get( '/', ( req, res ) => {
 	} )
 } )
 
-app.get( '/myposts', ( req, res ) => {
-	var user = req.session.user;
-	if (user === undefined) {
-		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
-	} else {
-		res.render('myposts1', {
-			user: user
-		});
-	}
-} )
-
+//Login route
 app.post('/login', function (request, response) {
 	if(request.body.email.length === 0) {
 		response.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
@@ -90,6 +80,8 @@ app.post('/login', function (request, response) {
 	});
 });
 
+
+//logout route
 app.get('/logout', function (request, response) {
 	request.session.destroy(function(error) {
 		if(error) {
@@ -98,6 +90,75 @@ app.get('/logout', function (request, response) {
 		response.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
 	})
 });
+
+
+//My posts, viewable after login success
+app.get( '/myposts', ( req, res ) => {
+	var user = req.session.user;
+	if (user === undefined) {
+		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+	} else {
+		Post.findAll({
+			where: {
+				userId: user.id
+			}
+		}).then( post=> {
+	 		res.render('myposts', {result: post, user:user})
+	 	})
+	}
+} )
+
+//Create post
+
+app.get( '/createpost', ( req, res ) => {
+	var user = req.session.user;
+	if (user === undefined) {
+		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+	} else {
+		res.render('createpost', {
+			user: user
+		});
+	}
+} )
+
+app.post( '/redirectcreatepost', ( req, res ) => {
+	var user = req.session.user;
+	console.log("blablablbalbalalablaalblab"+user.id+"blablablbalbalalablaalblab")
+	if (user === undefined) {
+		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+	} else {
+	  	db.sync({force: false}).then( ()=> {
+			User.findOne({
+				where: {
+					id: user.id
+				}
+			}).then	( user =>{
+	  			user.createPost({
+			 	title: req.body.title,
+			 	body: req.body.bericht
+	  			})
+			}).then ( post =>{
+				res.redirect('myposts')
+			})
+	 	})		
+	}
+} )
+
+//All posts
+
+app.get( '/allposts', ( req, res ) => {
+	var user = req.session.user;
+	if (user === undefined) {
+		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+	} else {
+		Post.findAll().then( post =>{
+	 	console.log( post )
+	 	res.render('allposts', {result: post, user:user})
+		})
+	}
+} )
+
+
 
 //Register route, after registering redirect to login
 app.get( '/register', ( req, res ) => {
@@ -123,6 +184,7 @@ app.post( '/register', ( req, res ) => {
 	} )
 } )
 
+
 app.listen(3000, function () {
-			console.log('Example app listening')
+			console.log('3000 is a beautiful song')
 } )

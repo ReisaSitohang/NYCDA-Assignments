@@ -1,0 +1,17 @@
+html
+	-var title='All posts'
+	include includes/head.pug
+	body
+		if user
+			include includes/loggedinnav.pug
+			h5 User : #{user.name} #{user.lastname}
+			div.row
+				each thing in result
+					div.SeperateMessages.col.s12.col.m10.col.offset-m1
+						h5 #{thing.title}
+						p.thetext #{thing.body}
+						p.timestamp.right-align #{thing.createdAt}
+
+		else
+			-var login='Please login to view this page'
+			include includes/notloggedin.pug	
