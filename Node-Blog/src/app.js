@@ -46,7 +46,7 @@ Post.belongsTo ( User )
 //____________Set express routers________________
 //Homepage/Login-page
 app.get( '/', ( req, res ) => {
-	res.render( 'index1', {
+	res.render( 'index', {
 		message: req.query.message,
 		user: req.session.user
 	} )
@@ -157,6 +157,26 @@ app.get( '/allposts', ( req, res ) => {
 		})
 	}
 } )
+
+// app.post( '/register', ( req, res ) => {
+// 	db.sync({force: false}).then( ()=> {
+// 		User.create( {
+// 			name: req.body.firstName,
+// 			lastname: req.body.lastName,
+// 			birthday: req.body.birthDay,
+// 			email: req.body.emailAddress,
+// 			password: req.body.pswrd
+// 		} ).then( ()=> {
+// 		res.redirect( '/' )
+// 		throw 'error'
+// 		} ).catch((err)=>{
+// 			var error="Error"
+// 		res.render('register',{error, usedemail: req.body.emailAddress, })
+// 		console.log(req.body.emailAddress+"already exists")
+// 		})
+// 	} )
+// } )
+
 
 
 

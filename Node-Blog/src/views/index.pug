@@ -1,38 +1,14 @@
 html
 	-var title='Welcome to notTumblr'
 	include includes/head.pug
-		script.
-			$(document).ready(function () {
-				console.log("doc ready")
-				$('#Submit').click(function(event) {
-					if($('#email').val().trim().length === 0 || $('#pswrd').val().trim().length === 0) {
-						event.preventDefault();
-						$('#err-message').html("Your username or password is empty.");
-					}
-				});
-			});
 	body
 		if user
-			a(href='/myposts') My Posts
-			br
-			a(href='/logout') log out
-		else 		
-			h1 Welcome to notTumblr
-			br
-			|  Email:
-			br
-			input#email(type='email', name='emailAddress')
-			br
-			|  Password:
-			br
-			input#pswrd(type='password', name='pswrd')
-			br
-			br
-			input#Submit(type='submit', value='Submit')
-			br
-			a(href='/Register') Register
-			br
+			include includes/loggedinnav.pug
+			h5 Welcome back #{user.name} #{user.lastname}!
+		else
+			-var login=title
+			include includes/notloggedin.pug	
 
-		h2#err-message= message
+
 
 

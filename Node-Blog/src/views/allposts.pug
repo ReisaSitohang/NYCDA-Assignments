@@ -4,14 +4,44 @@ html
 	body
 		if user
 			include includes/loggedinnav.pug
+			script.
+				$(document).ready(function(){
+					$('.collapsible').collapsible();
+				})
 			h5 User : #{user.name} #{user.lastname}
 			div.row
-				each thing in result
-					div.SeperateMessages.col.s12.col.m10.col.offset-m1
-						h5 #{thing.title}
-						p.thetext #{thing.body}
-						p.timestamp.right-align #{thing.createdAt}
-
+					each thing in result
+						div.message.col.s12.col.m10.col.offset-m1
+							ul.collapsible(data-collapsible='accordion')
+								li
+									.collapsible-header.active
+										i.material-icons chat_bubble_outline
+										h5 #{thing.title}, by #{user.name} #{user.lastname}									
+									.collapsible-body
+										div.row
+											div.col.s12.col.m10.col.offset-m1
+												p.thetext #{thing.body}
+												p.timestamp.right-align #{thing.createdAt}		
+								li
+									.collapsible-header
+										i.material-icons note_add
+										| Leave a comment
+									.collapsible-body
+										form.bulletin(action='/commentonpost', method='post')
+											div.row
+												div
+													input.titlebar(type='text', autofocus, name='title', placeholder="Title" required)
+												div
+													textarea.messagearea(rows="10" cols="50" type='text', name="bericht" placeholder="Let it all out..." required)
+												div.right-align
+													input.waves-effect.waves-light.btn.btn-flat(type='submit', value='Leave comment')
+								li
+									.collapsible-header
+										i.material-icons library_books
+										| See all comments
+									.collapsible-body
+										p Lorem ipsum dolor sit amet.
 		else
 			-var login='Please login to view this page'
 			include includes/notloggedin.pug	
+
