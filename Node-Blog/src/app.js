@@ -39,9 +39,18 @@ let Post = db.define( 'post', {
 	body: Sequelize.STRING,
 } )
 
+let Comment = db.define( 'comment', {
+	title: Sequelize.STRING,
+	body: Sequelize.STRING,
+} )
+
 //___________Define relations______________
 User.hasMany ( Post )
+User.hasMany ( Comment )
+Post.hasMany ( Comment )
 Post.belongsTo ( User )
+Comment.belongsTo ( User )
+
 
 //____________Set express routers________________
 //Homepage/Login-page
@@ -123,7 +132,6 @@ app.get( '/createpost', ( req, res ) => {
 
 app.post( '/redirectcreatepost', ( req, res ) => {
 	var user = req.session.user;
-	console.log("blablablbalbalalablaalblab"+user.id+"blablablbalbalalablaalblab")
 	if (user === undefined) {
 		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
 	} else {
@@ -144,38 +152,63 @@ app.post( '/redirectcreatepost', ( req, res ) => {
 	}
 } )
 
-//All posts
+//All posts page
 
 app.get( '/allposts', ( req, res ) => {
 	var user = req.session.user;
 	if (user === undefined) {
-		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
+		res.redirect('/');
 	} else {
-		Post.findAll().then( post =>{
+		Post.findAll({
+		    include: [{
+		        model: User,
+		        attributes:['name', 'lastname']
+		    }]			
+		}).then( post =>{
 	 	console.log( post )
 	 	res.render('allposts', {result: post, user:user})
 		})
 	}
 } )
 
-// app.post( '/register', ( req, res ) => {
-// 	db.sync({force: false}).then( ()=> {
-// 		User.create( {
-// 			name: req.body.firstName,
-// 			lastname: req.body.lastName,
-// 			birthday: req.body.birthDay,
-// 			email: req.body.emailAddress,
-// 			password: req.body.pswrd
-// 		} ).then( ()=> {
-// 		res.redirect( '/' )
-// 		throw 'error'
-// 		} ).catch((err)=>{
-// 			var error="Error"
-// 		res.render('register',{error, usedemail: req.body.emailAddress, })
-// 		console.log(req.body.emailAddress+"already exists")
-// 		})
-// 	} )
-// } )
+		// Comment.findAll({
+		//     include: [{
+		//         model: User,
+		//         attributes:['name', 'lastname']
+		//     }]			
+		// }).then( post =>{
+	 // 	console.log( post )
+	 // 	res.render('allposts', {resul2t: post, user:user})
+		// })
+
+//adding comment to comment db
+
+app.post( '/commentonpost', ( req, res ) => {
+	var user = req.session.user;
+	if (user === undefined) {
+		res.redirect('/');
+	} else {
+	  	db.sync({force: false}).then( ()=> {
+			User.findOne({
+				where: {
+					id: user.id
+				}
+			}).then	( user =>{
+	  			user.createComment({
+			 	title: req.body.title,
+			 	body: req.body.bericht
+	  			}).then ( post =>{
+					res.redirect('allposts')
+				})
+			})
+	 	})		
+	}
+} )
+
+
+
+
+
 
 
 

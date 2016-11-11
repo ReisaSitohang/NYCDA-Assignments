@@ -4,19 +4,20 @@ html
 	body
 		if user
 			include includes/loggedinnav.pug
-			script.
-				$(document).ready(function(){
-					$('.collapsible').collapsible();
-				})
+			include includes/commentscript.pug
 			h5 User : #{user.name} #{user.lastname}
 			div.row
 					each thing in result
 						div.message.col.s12.col.m10.col.offset-m1
-							ul.collapsible(data-collapsible='accordion')
+							ul.collapsible.popout(data-collapsible='accordion')
 								li
 									.collapsible-header.active
-										i.material-icons chat_bubble_outline
-										h5 #{thing.title}, by #{user.name} #{user.lastname}									
+										div.row.titlehead
+											div.col.m9
+												i.material-icons chat_bubble_outline
+												h5 #{thing.title}
+											div.col.m3
+												p by #{thing.user.name} #{thing.user.lastname}									
 									.collapsible-body
 										div.row
 											div.col.s12.col.m10.col.offset-m1
@@ -30,17 +31,21 @@ html
 										form.bulletin(action='/commentonpost', method='post')
 											div.row
 												div
-													input.titlebar(type='text', autofocus, name='title', placeholder="Title" required)
+													input(type='text', autofocus, name='title', placeholder="Title" required)
 												div
-													textarea.messagearea(rows="10" cols="50" type='text', name="bericht" placeholder="Let it all out..." required)
+													textarea(rows="10" cols="50" type='text', name="bericht" placeholder="Let it all out..." required)
 												div.right-align
-													input.waves-effect.waves-light.btn.btn-flat(type='submit', value='Leave comment')
+													input#searchbutton.waves-effect.waves-light.btn.btn-flat(type='submit', value='Leave comment')
 								li
 									.collapsible-header
 										i.material-icons library_books
 										| See all comments
 									.collapsible-body
-										p Lorem ipsum dolor sit amet.
+										//- each thing2 in result2
+										//- 	div.row
+										//- 		div.col.s12.col.m10.col.offset-m1
+										//- 			p.thetext #{thing2.body}
+										//- 			p.timestamp.right-align #{thing2.createdAt}	
 		else
 			-var login='Please login to view this page'
 			include includes/notloggedin.pug	
