@@ -17,7 +17,7 @@ app.set('view engine', 'pug');
 //middlewares
 app.use (express.static(__dirname + '/public'))
 app.use (bodyParser.urlencoded({     
-  extended: true
+	extended: true
 })); 
 app.use(session({
 	secret: 'hushhush',
@@ -40,17 +40,22 @@ let Post = db.define( 'post', {
 } )
 
 let Comment = db.define( 'comment', {
-	title: Sequelize.STRING,
 	body: Sequelize.STRING,
 } )
 
 //___________Define relations______________
 User.hasMany ( Post )
-User.hasMany ( Comment )
-Post.hasMany ( Comment )
 Post.belongsTo ( User )
-Comment.belongsTo ( User )
 
+Post.hasMany( Comment )
+Comment.belongsTo( Post )
+
+User.hasMany( Comment )
+Comment.belongsTo( User )
+
+db.sync({force: false}).then( ()=> {
+	console.log("N-sync")
+})
 
 //____________Set express routers________________
 //Homepage/Login-page
@@ -90,7 +95,7 @@ app.post('/login', function (request, response) {
 });
 
 
-//logout route
+//Logout route
 app.get('/logout', function (request, response) {
 	request.session.destroy(function(error) {
 		if(error) {
@@ -112,8 +117,8 @@ app.get( '/myposts', ( req, res ) => {
 				userId: user.id
 			}
 		}).then( post=> {
-	 		res.render('myposts', {result: post, user:user})
-	 	})
+			res.render('myposts', {result: post, user:user})
+		})
 	}
 } )
 
@@ -135,20 +140,19 @@ app.post( '/redirectcreatepost', ( req, res ) => {
 	if (user === undefined) {
 		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
 	} else {
-	  	db.sync({force: false}).then( ()=> {
-			User.findOne({
-				where: {
-					id: user.id
-				}
-			}).then	( user =>{
-	  			user.createPost({
-			 	title: req.body.title,
-			 	body: req.body.bericht
-	  			})
-			}).then ( post =>{
-				res.redirect('myposts')
+		User.findOne({
+			where: {
+				id: user.id
+			}
+		}).then	( user =>{
+			user.createPost({
+				title: req.body.title,
+				body: req.body.bericht
 			})
-	 	})		
+		}).then ( post =>{
+			console.log(post)
+			res.redirect('myposts')
+		})	
 	}
 } )
 
@@ -160,56 +164,48 @@ app.get( '/allposts', ( req, res ) => {
 		res.redirect('/');
 	} else {
 		Post.findAll({
-		    include: [{
-		        model: User,
-		        attributes:['name', 'lastname']
-		    }]			
+			include: [
+			{
+				model: User,
+				attributes:['name', 'lastname']
+			},
+			{
+				model: Comment,
+				attributes:['body'],
+				include: [{
+					model: User,
+					attributes:['name', 'lastname']
+				}]
+			}]
 		}).then( post =>{
-	 	console.log( post )
+			console.log( post[0].comments )
+			// res.send(post)
 	 	res.render('allposts', {result: post, user:user})
-		})
+	 })
 	}
 } )
 
-		// Comment.findAll({
-		//     include: [{
-		//         model: User,
-		//         attributes:['name', 'lastname']
-		//     }]			
-		// }).then( post =>{
-	 // 	console.log( post )
-	 // 	res.render('allposts', {resul2t: post, user:user})
-		// })
-
-//adding comment to comment db
+//Adding comment to comment model in db
 
 app.post( '/commentonpost', ( req, res ) => {
 	var user = req.session.user;
 	if (user === undefined) {
 		res.redirect('/');
 	} else {
-	  	db.sync({force: false}).then( ()=> {
-			User.findOne({
-				where: {
-					id: user.id
-				}
-			}).then	( user =>{
-	  			user.createComment({
-			 	title: req.body.title,
-			 	body: req.body.bericht
-	  			}).then ( post =>{
-					res.redirect('allposts')
-				})
+		User.findOne({
+			where: {
+				id: user.id
+			}
+		}).then( user =>{
+			user.createComment({
+				body: req.body.bericht,
+				postId: req.body.postId
+			}).then ( comment =>{
+				res.redirect('allposts')
 			})
-	 	})		
+		})		
 	}
 } )
-
-
-
-
-
-
 
 
 
@@ -219,25 +215,25 @@ app.get( '/register', ( req, res ) => {
 } )
 
 app.post( '/register', ( req, res ) => {
-	db.sync({force: false}).then( ()=> {
-		User.create( {
-			name: req.body.firstName,
-			lastname: req.body.lastName,
-			birthday: req.body.birthDay,
-			email: req.body.emailAddress,
-			password: req.body.pswrd
-		} ).then( ()=> {
+
+	User.create( {
+		name: req.body.firstName,
+		lastname: req.body.lastName,
+		birthday: req.body.birthDay,
+		email: req.body.emailAddress,
+		password: req.body.pswrd
+	} ).then( ()=> {
 		res.redirect( '/' )
 		throw 'error'
-		} ).catch((err)=>{
-			var error="Error"
+	} ).catch((err)=>{
+		var error="Error"
 		res.render('register',{error, usedemail: req.body.emailAddress, })
 		console.log(req.body.emailAddress+"already exists")
-		})
-	} )
+	})
+
 } )
 
 
 app.listen(3000, function () {
-			console.log('3000 is a beautiful song')
+	console.log('3000 is a beautiful song')
 } )
