@@ -6,12 +6,33 @@ html
 			include includes/loggedinnav.pug
 			h5 User : #{user.name} #{user.lastname}
 			div.row
-				each thing in result
-					div.SeperateMessages.col.s12.col.m10.col.offset-m1
-						h5 #{thing.title}
-						p.thetext #{thing.body}
-						p.timestamp.right-align #{thing.createdAt}
-
+					each post in result
+						div.message.col.s12.col.m10.col.offset-m1
+							ul.collapsible.popout(data-collapsible='expandable')
+								li
+									.collapsible-header.active
+										div.row.titlehead
+											div.col.m9
+												i.material-icons chat_bubble_outline
+												h5 #{post.title}
+									.collapsible-body
+										div.row
+											div.col.s12.col.m10.col.offset-m1
+												p.thetext #{post.body}
+												p.timestamp.right-align #{post.createdAt}		
+								//- 	form.bulletin(action='/commentonpost', method='post')
+								//- 		input#postTitle(type='text', name='postId', value=post.id, hidden)
+								//- li
+								//- 	.collapsible-header
+								//- 		i.material-icons library_books
+								//- 		| See all comments
+								//- 	.collapsible-body
+								//- 			div.row
+								//- 				div.col.s12.col.m10.col.offset-m1
+								//- 					if post.comments
+								//- 						each comment in post.comments
+								//- 							p.thetext #{comment.body}
+								//- 							P.right-align left by: #{comment.user.name} #{comment.user.lastname}
 		else
 			-var login='Please login to view this page'
 			include includes/notloggedin.pug	

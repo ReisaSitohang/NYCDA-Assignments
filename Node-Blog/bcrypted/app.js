@@ -69,7 +69,7 @@ app.get( '/', ( req, res ) => {
 } )
 
 //Login route
-app.post('/login', function (req, res) {
+app.post('/login', function (req, respond) {
 	let Password = req.body.password
 
 	if(req.body.email.length === 0) {
@@ -89,13 +89,13 @@ app.post('/login', function (req, res) {
 			console.log(res)
 			if (user !== null && res === true) {
 				req.session.user = user;
-				res.redirect('/myposts');
+				respond.redirect('/myposts');
 			} else {
 				console.log(user.password)
-				res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+				respond.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
 			}
 		}, function (error) {
-			res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+			respond.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
 		})
 	})
 })
@@ -123,6 +123,7 @@ app.get( '/myposts', ( req, res ) => {
 				userId: user.id
 			}
 		}).then( post=> {
+			// res.send( post )
 			res.render('myposts', {result: post, user:user})
 		})
 	}
