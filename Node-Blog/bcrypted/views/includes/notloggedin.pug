@@ -6,7 +6,7 @@ nav
 			a(href='register') Register			
 h1 #{login}
 br
-form(action='/login' method='post')
+form(name='loginform' action='/login' method='post' onsubmit="return validateForm()")
 	|  Email:
 	br
 	input#email(type='email', name='email')
@@ -19,14 +19,3 @@ form(action='/login' method='post')
 	input#Submit.btn(type='submit', value='Login')
 
 h2#err-message= message
-
-script.
-	$(document).ready(function () {
-		console.log("doc ready")
-		$('#Submit').click(function(event) {
-			if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
-				event.preventDefault();
-				$('#err-message').html("Your username or password is empty.");
-			}
-		});
-	});	

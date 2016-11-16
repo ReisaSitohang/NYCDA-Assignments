@@ -61,6 +61,7 @@ db.sync({force: false}).then( ()=> {
 //____________Set express routers________________
 //Homepage/Login-page
 app.get( '/', ( req, res ) => {
+	console.log(req.query.message)
 	res.render( 'index', {
 		message: req.query.message,
 		user: req.session.user
@@ -68,45 +69,45 @@ app.get( '/', ( req, res ) => {
 } )
 
 //Login route
-app.post('/login', function (request, response) {
-	let Password = request.body.password
+app.post('/login', function (req, res) {
+	let Password = req.body.password
 
-	if(request.body.email.length === 0) {
-		response.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
+	if(req.body.email.length === 0) {
+		res.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
 		return;
 	}
-	if(request.body.password.length === 0) {
-		response.redirect('/?message=' + encodeURIComponent("Please fill out your password."));
+	if(req.body.password.length === 0) {
+		res.redirect('/?message=' + encodeURIComponent("Please fill out your password."));
 		return;
 	}
 	User.findOne({
 		where: {
-			email: request.body.email
+			email: req.body.email
 		}
 	}).then(function (user) {
 		bcrypt.compare(Password, user.password, function(err, res) {
 			console.log(res)
 			if (user !== null && res === true) {
-				request.session.user = user;
-				response.redirect('/myposts');
+				req.session.user = user;
+				res.redirect('/myposts');
 			} else {
 				console.log(user.password)
-				response.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+				res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
 			}
 		}, function (error) {
-			response.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+			res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
 		})
 	})
 })
 
 
 //Logout route
-app.get('/logout', function (request, response) {
-	request.session.destroy(function(error) {
+app.get('/logout', function (req, res) {
+	req.session.destroy(function(error) {
 		if(error) {
 			throw error;
 		}
-		response.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
+		res.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
 	})
 });
 
@@ -216,11 +217,45 @@ app.post( '/commentonpost', ( req, res ) => {
 
 //Register route, after registering redirect to login
 app.get( '/register', ( req, res ) => {
-	res.render( 'register' )
+	res.render( 'register', {
+		message: req.query.message
+		} )
 } )
 
 app.post( '/register', ( req, res ) => {
-	let password = req.body.pswrd
+	let password = req.body.pswrd1
+
+	console.log(req.body)
+
+	if(req.body.firstName.length === 0) {
+		res.redirect('/register?message=' + encodeURIComponent("Please fill out your name."));
+		return;
+	}
+	if(req.body.lastName.length === 0) {
+		res.redirect('/register?message=' + encodeURIComponent("Please fill out your last name."));
+		return;
+	}
+	if(req.body.birthDay.length === 0) {
+	res.redirect('/register?message=' + encodeURIComponent("Please fill out your password."));
+		return;
+	}
+	if(req.body.emailAddress.length === 0) {
+		res.redirect('/register?message=' + encodeURIComponent("Please fill out your email address."));
+		return;
+	}
+	if(req.body.pswrd.length === 0) {
+		res.redirect('/register?message=' + encodeURIComponent("Please fill out your password."));
+		return;
+	}
+	if(req.body.pswrd2.length === 0) {
+		res.redirect('/register?message=' + encodeURIComponent("Please fill out your password."));
+		return;
+	}
+	if(req.body.pswrd2.length !== req.body.pswrd.length) {
+		res.redirect('/register?message=' + encodeURIComponent("Your passwords don't match, please re-enter."));
+		return;
+	}
+
 	bcrypt.hash(password, null, null, (err, hash)=> {
 		User.create( {
 			name: req.body.firstName,
