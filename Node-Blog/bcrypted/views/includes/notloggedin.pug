@@ -1,0 +1,32 @@
+nav
+	.nav-wrapper
+		a.brand-logo(href='#') Logo
+		ul#nav-mobile.right.hide-on-med-and-down
+			li
+			a(href='register') Register			
+h1 #{login}
+br
+form(action='/login' method='post')
+	|  Email:
+	br
+	input#email(type='email', name='email')
+	br
+	|  Password:
+	br
+	input#password(type='password', name='password')
+	br
+	br
+	input#Submit.btn(type='submit', value='Login')
+
+h2#err-message= message
+
+script.
+	$(document).ready(function () {
+		console.log("doc ready")
+		$('#Submit').click(function(event) {
+			if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
+				event.preventDefault();
+				$('#err-message').html("Your username or password is empty.");
+			}
+		});
+	});	
