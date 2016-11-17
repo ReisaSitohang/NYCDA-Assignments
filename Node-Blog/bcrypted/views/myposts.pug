@@ -2,10 +2,9 @@ html
 	-var title='My posts'
 	include includes/head.pug
 	body
-		include includes/commentscript.pug
 		if user
 			include includes/loggedinnav.pug
-			h5 User : #{user.name} #{user.lastname} #{user.id}
+			h5 User : #{user.name} #{user.lastname}
 			div.row
 					each post in result
 						if post.userId == user.id
