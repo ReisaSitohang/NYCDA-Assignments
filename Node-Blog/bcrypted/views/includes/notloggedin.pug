@@ -1,0 +1,21 @@
+nav
+	.nav-wrapper
+		a.brand-logo(href='#') Logo
+		ul#nav-mobile.right.hide-on-med-and-down
+			li
+			a(href='register') Register			
+h1 #{login}
+br
+form(name='loginform' action='/login' method='post' onsubmit="return validateForm()")
+	|  Email:
+	br
+	input#email(type='email', name='email')
+	br
+	|  Password:
+	br
+	input#password(type='password', name='password')
+	br
+	br
+	input#Submit.btn(type='submit', value='Login')
+
+h2#err-message= message
