@@ -119,11 +119,14 @@ app.get( '/myposts', ( req, res ) => {
 		res.redirect('/?message=' + encodeURIComponent("Please log in to view your profile."));
 	} else {
 		Post.findAll({
-			where: {
-				userId: user.id
-			}
-		}).then( post=> {
-			// res.send( post )
+			include: [{
+				model: Comment,
+				include: [{
+					model: User,
+					attributes:['name', 'lastname']
+				}]
+			}]
+		}).then( ( post ) => {
 			res.render('myposts', {result: post, user:user})
 		})
 	}
