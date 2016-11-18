@@ -4,36 +4,59 @@ html
 	body
 		script.
 			$(document).ready(function () {
-					var error = #{error}
-					console.log(error)
-				if ( error !== undefined ) {
-					$('#emailnono').html("Sorry, #{usedemail} is already in use.")
-				}
-			});
+				var error = #{error}
+				console.log(error)
+					if ( error !== undefined ) {
+						$('#emailnono').html("Sorry, #{usedemail} is already in use.")
+						}
+				$('#Submit').click(function(){
+					if ( $('#password1').val()!== $('#password2').val() ){
+					alert('Passwords don\'t match, please re-enter.')
+						return false
+					}
+				})
+				  $('.datepicker').pickadate({
+					min: new Date(1900,1,1),
+					max: new Date(2020,7,14),
+				    selectMonths: true, // Creates a dropdown to control month
+				    selectYears: 120  // Creates a dropdown of 15 years to control year
+				  })
+			})
+		nav
+			.nav-wrapper
+				a.brand-logo(href='/') nB
+				ul#nav-mobile.right.hide-on-med-and-down
+					li
+					a(href='/') Login		
+		h1.white-text Join the fambam
+		div.white-text
+			form(name='form', action='/register', method='post', onsubmit="return checkForm()")
+				|  First name:
+				br
+				input(type='text', name='firstName')
+				br
+				|  Last name:
+				br
+				input(type='text', name='lastName')
+				br
+				|  Birthday:
+				br
+				input.datepicker(type='date', name='birthDay')
+				br
+				|  Email:
+				br
+				input(type='email', name='emailAddress')
+				br
+				|  Password:
+				br
+				input#password1(type='password',pattern='.{8,}' title='8 characters minimum', name='pswrd')
+				br
+				|  Re-enter password:
+				br
+				input#password2(type='password',pattern='.{8,}' title='8 characters minimum', name='pswrd2')
+				br
+				br
+				input#Submit.left.enter.btn.btn-primary.btn.createbutton(type='submit', value='Submit')
 
-		h1 Join the fambam
-		form(action='/register', method='post' required)
-			|  First name:
-			br
-			input(type='text', name='firstName' required)
-			br
-			|  Last name:
-			br
-			input(type='text', name='lastName' required)
-			br
-			|  Birthday:
-			br
-			input(type='date', name='birthDay' required)
-			br
-			|  Email:
-			br
-			input(type='email', name='emailAddress' required)
-			br
-			|  Password:
-			br
-			input(type='password',pattern='.{8,}' title='8 characters minimum', name='pswrd' required)
-			br
-			br
-			input#Submit(type='submit', value='Submit')
-
+		h2#err-message= message
 		h4#emailnono
