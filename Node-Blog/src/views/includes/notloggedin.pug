@@ -1,32 +1,19 @@
 nav
 	.nav-wrapper
-		a.brand-logo(href='#') Logo
+		a.brand-logo(href='#') nB
 		ul#nav-mobile.right.hide-on-med-and-down
 			li
-			a(href='register') Register			
-h1 #{login}
+			a(href='register') Register		
+
 br
-form(action='/login' method='post')
-	|  Email:
-	br
-	input#email(type='email', name='email')
-	br
-	|  Password:
-	br
-	input#password(type='password', name='password')
-	br
-	br
-	input#Submit.btn(type='submit', value='Login')
+div
+	.login
+			div
+				h2.white-text #{login}
+				h4.white-text.right Login
+			form(name='loginform' action='/login' method='post' onsubmit="return validateForm()")
+				input#email.enter(type='email', name='email', placeholder='Email', required='required')
+				input#password.enter(type='password', name='password', placeholder='Password', required='required')
+				button.enter#Submit.btn.btn-primary.btn-block.btn-large(type='submit') Let me in.
 
-h2#err-message= message
-
-script.
-	$(document).ready(function () {
-		console.log("doc ready")
-		$('#Submit').click(function(event) {
-			if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
-				event.preventDefault();
-				$('#err-message').html("Your username or password is empty.");
-			}
-		});
-	});	
+			p.right.light-blue-text.error#err-message= message
