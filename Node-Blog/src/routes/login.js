@@ -20,6 +20,7 @@ let User  = db.define( 'user', {
 	password: Sequelize.STRING
 } )
 
+
 //___________Middleware
 router.use (bodyParser.urlencoded({     
 	extended: true

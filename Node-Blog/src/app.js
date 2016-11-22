@@ -10,6 +10,8 @@ const db         =  new Sequelize('nodeblog', process.env.POSTGRES_USER, process
 						host: 'localhost',
 						dialect: 'postgres'
 					});
+
+
 //Set views
 app.set('views', './views')
 app.set('view engine', 'pug')

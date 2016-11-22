@@ -31,6 +31,7 @@ let Post = db.define( 'post', {
 User.hasMany ( Post )
 Post.belongsTo ( User )
 
+
 //__________Set Routes
 
 router.get( '/createpost', ( req, res ) => {
