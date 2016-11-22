@@ -35,6 +35,10 @@ i, h5, p{
 	margin-top: 10px;
 }
 
+div.registerform {
+	padding-left:100px;
+	padding-right:100px;
+}
 textarea {
     width: 100%;
     height: 8rem;
