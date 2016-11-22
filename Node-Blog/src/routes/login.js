@@ -20,6 +20,10 @@ let User  = db.define( 'user', {
 	password: Sequelize.STRING
 } )
 
+db.sync({force: false}).then( ()=> {
+	console.log("N-sync")
+})
+
 //___________Middleware
 router.use (bodyParser.urlencoded({     
 	extended: true

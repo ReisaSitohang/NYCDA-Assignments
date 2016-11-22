@@ -19,6 +19,10 @@ let User  = db.define( 'user', {
 	password: Sequelize.STRING
 } )
 
+db.sync({force: false}).then( ()=> {
+	console.log("N-sync")
+})
+
 //__________Routes
 
 router.get( '/register', ( req, res ) => {
@@ -28,7 +32,7 @@ router.get( '/register', ( req, res ) => {
 } )
 
 router.post( '/register', ( req, res ) => {
-	let password = req.body.pswrd1
+	let password = req.body.pswrd
 
 	console.log(req.body)
 
@@ -56,7 +60,7 @@ router.post( '/register', ( req, res ) => {
 		res.redirect('/register?message=' + encodeURIComponent("Please fill out your password."));
 		return;
 	}
-	if(req.body.pswrd2.length !== req.body.pswrd.length) {
+	if(req.body.pswrd2 !== req.body.pswrd) {
 		res.redirect('/register?message=' + encodeURIComponent("Your passwords don't match, please re-enter."));
 		return;
 	}
