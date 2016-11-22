@@ -42,6 +42,7 @@ db.sync({force: false}).then( ()=> {
 	console.log("N-sync")
 })
 
+
 //__________All posts page_______________
 
 router.get( '/allposts', ( req, res ) => {

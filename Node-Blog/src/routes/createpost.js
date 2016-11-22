@@ -31,9 +31,6 @@ let Post = db.define( 'post', {
 User.hasMany ( Post )
 Post.belongsTo ( User )
 
-db.sync({force: false}).then( ()=> {
-	console.log("N-sync")
-})
 
 //__________Set Routes
 

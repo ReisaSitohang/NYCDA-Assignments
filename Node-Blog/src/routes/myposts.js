@@ -37,9 +37,6 @@ Comment.belongsTo( Post )
 User.hasMany( Comment )
 Comment.belongsTo( User )
 
-db.sync({force: false}).then( ()=> {
-	console.log("N-sync")
-})
 
 //___________Routes
 //___________My posts, viewable after login success
