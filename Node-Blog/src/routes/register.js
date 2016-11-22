@@ -49,6 +49,10 @@ router.post( '/register', ( req, res ) => {
 		res.redirect('/register?message=' + encodeURIComponent("Please fill out your email address."));
 		return;
 	}
+		if(req.body.pswrd.length < 8) {
+		res.redirect('/register?message=' + encodeURIComponent("Password has to be at least 8 char long."));
+		return;
+	}
 	if(req.body.pswrd.length === 0) {
 		res.redirect('/register?message=' + encodeURIComponent("Please fill out your password."));
 		return;

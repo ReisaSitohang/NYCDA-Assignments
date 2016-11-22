@@ -28,8 +28,8 @@ html
 				ul#nav-mobile.right.hide-on-med-and-down
 					li
 					a(href='/') Login		
-		h1.white-text Join the fambam
-		div.white-text
+		h1.white-text.center Join the fambam
+		div.white-text.registerform
 			form(name='form', action='/register', method='post', onsubmit="return checkForm()")
 				|  First name:
 				br
@@ -57,6 +57,8 @@ html
 				br
 				br
 				input#Submit.left.enter.btn.btn-primary.btn.createbutton(type='submit', value='Submit')
+		div.white-text.center
+			h5#err-message= message
+		div.white-text.center
+			h5#emailnono
 
-		h2#err-message= message
-		h4#emailnono
